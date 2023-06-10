@@ -23,5 +23,6 @@ from django.conf.urls import handler404
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("apps.base.urls")),
+    path("", include("apps.users.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 handler404 = "apps.base.views.not_found_view"
