@@ -44,10 +44,12 @@ INSTALLED_APPS = [
     "apps.users",
     "apps.tags",
     "apps.products",
+    "apps.notifications",
+    "apps.base",
 ]
 
 # custom user
-AUTH_USER_MODEL = "apps.users.User"
+AUTH_USER_MODEL = "users.User"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

@@ -36,5 +36,5 @@ class ProductImage(models.Model):
         return f"{self.product.name}'s image"
 
     class Meta:
-        verbose_name = "product_image"
-        verbose_name_plural = "product_images"
+        verbose_name = "product image"
+        verbose_name_plural = "product images"
