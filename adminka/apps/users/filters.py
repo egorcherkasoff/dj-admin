@@ -15,7 +15,7 @@ class UserFilter(django_filters.FilterSet):
     email = django_filters.CharFilter(lookup_expr="icontains")
     email.field.widget = forms.EmailInput(attrs={"type":"email", "class":"form-control"})
     
-    date_joined = django_filters.DateFilter(lookup_expr="iexact", field_name="date_joined")
+    date_joined = django_filters.DateFilter(lookup_expr="contains", field_name="date_joined")
     date_joined.field.widget = forms.DateInput(attrs={"type":"date", "class":"form-control"})
     
     date_joined_gt = django_filters.DateFilter(lookup_expr="gt", field_name="date_joined")
