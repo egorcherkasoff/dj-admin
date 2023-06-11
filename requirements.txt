@@ -3,3 +3,4 @@ pillow
 mysqlclient
 django-filter
 python-dotenv
+django-spurl
