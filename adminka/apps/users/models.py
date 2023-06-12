@@ -6,7 +6,7 @@ from django.utils import timezone
 class User(AbstractUser):
     username = models.CharField(null=True, blank=True, max_length=25, unique=True)
     email = models.EmailField(unique=True, null=False, blank=False)
-    avatar = models.ImageField(null=True, blank=False)
+    avatar = models.ImageField(null=True, blank=True, upload_to="")
     middle_name = models.CharField(max_length=60, null=True, blank=True)
     last_activity = models.DateTimeField(null=True, blank=True)
     updated = models.DateTimeField(null=True, blank=True)
