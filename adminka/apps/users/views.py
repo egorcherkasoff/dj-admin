@@ -1,14 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LogoutView, LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 from .models import User
 from .filters import UserFilter
 from django.urls import reverse
 from .forms import AuthForm
 from django.core.paginator import Paginator
-from .forms import UserUpdateForm
+from .forms import UserUpdateForm, UserCreateForm
 from django.utils import timezone
 
 # Create your views here.
@@ -72,3 +72,18 @@ def delete_user(request, pk):
     user.is_active = False
     user.save()
     return redirect("view-users")
+
+@login_required(login_url="login")
+def create_user(request):
+    form = UserCreateForm()
+    context = {'form': form}
+    if request.method == "POST":
+        form = UserCreateForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            user.set_password(request.POST.get('password'))
+            user.save()
+            return redirect('view-users')
+            
+            
+    return render(request, "users/create-user.html", context)

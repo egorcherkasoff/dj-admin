@@ -7,7 +7,7 @@
         <form method="get">
             {{ filter_users.form.as_p }}
             <div class="row">
-                <a href="#" class="btn btn-danger col me-3">Reset</a>
+                <a href="{% url 'view-users' %}" class="btn btn-danger col me-3">Reset</a>
                 <input
                     type="submit"
                     value="Apply"
@@ -19,7 +19,7 @@
     <div class="p-4 shadow-lg mt-5 rounded-3">
         <div class="d-flex justify-content-between">
             <h1 class="fs-3 fw-bold text-center">Users</h1>
-            <a href="#" class="text-primary"
+            <a href="{% url 'create-user' %}" class="text-primary"
                 ><i class="fa-solid fa-circle-plus fs-1"></i
             ></a>
         </div>

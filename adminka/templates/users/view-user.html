@@ -71,6 +71,7 @@
                 disabled
             />
         </div>
+        {% if user.avatar %}
         <div>
             <p>{{user.get_full_name}}'s avatar</p>
             <img
@@ -81,6 +82,8 @@
                 class="border rounded-3"
             />
         </div>
+        {% endif %}
+        
     </div>
     <div class="rounded-3 p-3 mb-5 shadow-lg">
         <div class="d-flex justify-content-between">

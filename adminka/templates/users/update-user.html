@@ -28,6 +28,7 @@
         <form method="post" id="model" enctype=multipart/form-data>
           {% csrf_token %}
             {{form}}
+            {% if user.avatar %}
             <div>
                 <p class="mb-0">{{user.get_full_name}}'s current avatar</p>
                 <img
@@ -38,6 +39,7 @@
                     class="border rounded-3"
                 />
             </div>
+            {% endif %}
         </form>
     </div>
     <div class="rounded-3 p-3 mb-5 shadow-lg">
