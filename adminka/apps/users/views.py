@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LogoutView, LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 from .models import User
@@ -10,6 +11,7 @@ from .forms import AuthForm
 from django.core.paginator import Paginator
 from .forms import UserUpdateForm, UserCreateForm
 from django.utils import timezone
+
 
 # Create your views here.
 class Logout(LoginRequiredMixin, LogoutView):
@@ -33,7 +35,7 @@ class Login(LoginView):
 @login_required(login_url="login")
 def view_all_users(request):
     filter_users = UserFilter(
-        request.GET, queryset=User.objects.filter(deleted__isnull=True)
+        request.GET, queryset=User.objects.filter(deleted__isnull=True).order_by("id")
     )
     paginator = Paginator(filter_users.qs, 20)
     if request.GET.get("page"):
@@ -56,14 +58,16 @@ def view_user(request, pk):
 @login_required(login_url="login")
 def update_user(request, pk):
     user = User.objects.get(id=pk)
+    groups = user.groups.all()
     form = UserUpdateForm(instance=user)
     if request.method == "POST":
         form = UserUpdateForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             user = form.save()
             return redirect("view-user", user.id)
-    context = {"user": user, "form": form}
+    context = {"user": user, "form": form, "groups": groups}
     return render(request, "users/update-user.html", context)
+
 
 @login_required(login_url="login")
 def delete_user(request, pk):
@@ -73,17 +77,37 @@ def delete_user(request, pk):
     user.save()
     return redirect("view-users")
 
+
 @login_required(login_url="login")
 def create_user(request):
     form = UserCreateForm()
-    context = {'form': form}
+    context = {"form": form}
     if request.method == "POST":
         form = UserCreateForm(request.POST)
         if form.is_valid():
             user = form.save()
-            user.set_password(request.POST.get('password'))
+            user.set_password(request.POST.get("password"))
             user.save()
-            return redirect('view-users')
-            
-            
+            return redirect("view-users")
     return render(request, "users/create-user.html", context)
+
+@login_required(login_url="login")
+def update_user_groups(request, pk):
+    user = User.objects.get(id=pk)
+    user_groups = user.groups.all()
+    all_groups = Group.objects.exclude(user__id=user.id)
+    context = {"user": user, "user_groups": user_groups, "groups": all_groups}
+    return render(request, "users/update-user-groups.html", context)
+
+@login_required(login_url="login")
+def remove_user_group(request, pk, gr_id):
+    user = User.objects.get(id=pk)
+    user.groups.add(gr_id)
+    return redirect("update-user-groups", pk)
+
+@login_required(login_url="login")
+def add_user_group(request, pk, gr_id):
+    user = User.objects.get(id=pk)
+    user.groups.remove(gr_id)
+    return redirect("update-user-groups", pk)
+

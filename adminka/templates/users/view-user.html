@@ -88,9 +88,6 @@
     <div class="rounded-3 p-3 mb-5 shadow-lg">
         <div class="d-flex justify-content-between">
             <h2 class="fs-3 fw-bold text-center">Groups</h2>
-            <a href="#" class="text-warning"
-                ><i class="fa-solid fa-pen fa-2xl"></i
-            ></a>
         </div>
         <table class="table">
             <thead>
@@ -103,12 +100,10 @@
                 {% for group in groups %}
                 <tr>
                     <th scope="row">
-                        <a href="{% url 'view-user' user.id %}">{{group.id}}</a>
+                        {{group.id}}
                     </th>
                     <td>
-                        <a href="{% url 'view-user' user.id %}"
-                            >{{group.name}}</a
-                        >
+                        {{group.name}}
                     </td>
                 </tr>
                 {% endfor %}
