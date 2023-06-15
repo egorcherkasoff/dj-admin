@@ -7,9 +7,8 @@ from django.contrib import messages
 from .models import User
 from .filters import UserFilter
 from django.urls import reverse
-from .forms import AuthForm
 from django.core.paginator import Paginator
-from .forms import UserUpdateForm, UserCreateForm
+from .forms import UserUpdateForm, UserCreateForm, AuthForm
 from django.utils import timezone
 
 
@@ -59,7 +58,7 @@ def view_user(request, pk):
 def update_user(request, pk):
     user = User.objects.get(id=pk)
     groups = user.groups.all()
-    form = UserUpdateForm(instance=user)
+    form = UserUpdateForm(instance=user, use_required_attribute=False)
     if request.method == "POST":
         form = UserUpdateForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
@@ -91,6 +90,7 @@ def create_user(request):
             return redirect("view-users")
     return render(request, "users/create-user.html", context)
 
+
 @login_required(login_url="login")
 def update_user_groups(request, pk):
     user = User.objects.get(id=pk)
@@ -99,11 +99,13 @@ def update_user_groups(request, pk):
     context = {"user": user, "user_groups": user_groups, "groups": all_groups}
     return render(request, "users/update-user-groups.html", context)
 
+
 @login_required(login_url="login")
 def remove_user_group(request, pk, gr_id):
     user = User.objects.get(id=pk)
     user.groups.add(gr_id)
     return redirect("update-user-groups", pk)
+
 
 @login_required(login_url="login")
 def add_user_group(request, pk, gr_id):
@@ -111,3 +113,19 @@ def add_user_group(request, pk, gr_id):
     user.groups.remove(gr_id)
     return redirect("update-user-groups", pk)
 
+
+@login_required(login_url="login")
+def user_settings(request):
+    user = request.user
+    general_form = UserUpdateForm(instance=user, use_required_attribute=False)
+    if request.method == "POST":
+        if "conf_gen" in request.POST:
+            general_form = UserUpdateForm(request.POST, instance=user, use_required_attribute=False)
+            if general_form.is_valid():
+                user = general_form.save()
+        elif "conf_pass" in request.POST:
+            if request.POST.get("pass1") == request.POST.get("pass2"):
+                user.set_password(request.POST.get("pass2"))
+                user.save()
+    context = {"user": user, "general_form": general_form}
+    return render(request, "users/user-settings.html", context)

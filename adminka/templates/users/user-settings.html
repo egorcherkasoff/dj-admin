@@ -1,0 +1,35 @@
+{% extends 'base.html' %} 
+{% block title %}Adminka - User Settings{% endblock %} 
+{% block content %}
+<main class="my-5 container">
+    <div class="rounded-3 p-3 mb-5 shadow-lg">
+        <h1 class="h3">General info</h1>
+        <form method="post" id="model" enctype=multipart/form-data>
+          {% csrf_token %}
+          {{general_form}}
+          {% if user.avatar %}
+            <div>
+                <p class="mb-0">Your current avatar</p>
+                <img
+                    src="{{user.avatar.url}}"
+                    alt="{{user.get_full_name}}'s avatar"
+                    height="400px"
+                    width="400px"
+                    class="border rounded-3"
+                />
+            </div>
+            {% endif %}
+          <input name="conf_gen" type="submit" value="Confirm changes" class="mt-2 btn btn-success">
+        </form>
+        <h2 class="h3">Change password</h2>
+        <form method="post" id="model" enctype=multipart/form-data>
+          {% csrf_token %}
+          <label for="pass1">Enter new password</label>
+          <input type="password" name="pass1" id="pass1" class="form-control">
+          <label for="pass2">Confirm password</label>
+          <input type="password" name="pass2" id="pass2" class="form-control">
+          <input name="conf_pass" type="submit" value="Confirm changes" class="mt-2 btn btn-success">
+        </form>
+    </div>
+</main>
+{% endblock %}
