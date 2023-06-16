@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from ..tags.models import Tag
 
 
 # Create your models here.
@@ -11,6 +12,9 @@ class Product(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(null=True, blank=True)
     deleted = models.DateTimeField(null=True, blank=True)
+    tags = models.ManyToManyField(
+        to=Tag, related_name="products", related_query_name="tag", blank=True
+    )
 
     def __str__(self):
         return self.name

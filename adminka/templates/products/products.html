@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load spurl%}
+{% block title %}Adminka - Products{% endblock %}
+{% block content %}
+<main class="my-5 container">
+    <div class="p-4 shadow-lg rounded-3">
+        <form method="get">
+            {{ filter_products.form.as_p }}
+            <div class="row">
+                <a href="{% url 'view-products' %}" class="btn btn-danger col me-3">Reset</a>
+                <input
+                    type="submit"
+                    value="Apply"
+                    class="btn btn-primary col ms-2"
+                />
+            </div>
+        </form>
+    </div>
+    <div class="p-4 shadow-lg mt-5 rounded-3">
+        <div class="d-flex justify-content-between">
+            <h1 class="fs-3 fw-bold text-center">Products</h1>
+            <a href="{% url 'create-product' %}" class="text-primary"
+                ><i class="fa-solid fa-circle-plus fs-1"></i
+            ></a>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Date Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                 <tr>
+                    <th scope="row"> <a href="{% url 'view-product' product.id %}">{{product.id}}</a> </th>
+                    <td><a href="{% url 'view-product' product.id %}">{{product.name}}</a> </td>
+                    <td>{{product.amount}}</td>
+                    <td>{{product.price}}</td>
+                    <td>{{product.created|date:'Y-m-d'}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <nav class="d-flex justify-content-center">
+            <ul class="pagination mb-0 mt-2">
+                {% if products.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="{% spurl query=request.GET set_query='page={{products.previous_page_number}}'%}">Previous</a>
+                    </li>
+                {% endif %}
+                
+                {% for num in products.paginator.page_range %}
+                
+                <li class="page-item">
+                    <a class="page-link {% if num == products.number %} active {% endif %}" href="{% spurl query=request.GET set_query='page={{num}}'%}">{{num}}</a>
+                </li>
+                {% endfor %}
+                
+
+                {% if products.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{% spurl query=request.GET set_query='page={{products.next_page_number}}' %}">Next</a>
+                    </li>
+                {% endif %}
+                
+            </ul>
+        </nav>
+    </div>
+</main>
+{% endblock  %}
+

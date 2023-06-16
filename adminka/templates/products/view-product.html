@@ -1,0 +1,126 @@
+{% extends 'base.html' %} 
+{% block title %}Adminka - Product:{{product.name}}{% endblock %} 
+{% block content %}
+<main class="my-5 container">
+    <div class="rounded-3 p-3 my-5 shadow-lg d-flex justify-content-between">
+        <nav aria-label="breadcrumb ">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                    <a href="{% url 'view-products'%}">Products</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    {{product.name}} (ID:{{product.id}})
+                </li>
+            </ol>
+        </nav>
+        <div>
+            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-confirm"
+                >Delete
+            </button>
+            <a href="{% url 'update-product' product.id %}" class="btn btn-warning">Update</a>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="delete-confirm" tabindex="-1" aria-labelledby="delete-confirm-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="delete-confirm-label">Delete {{product.name}}</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            Are you sure you want to delete <span class="fw-bold">{{product.name}}</span>?
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">No</button>
+            <a href="{% url 'delete-product' product.id%}" type="button" class="btn btn-danger">Delete</a>
+        </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="rounded-3 p-3 mb-5 shadow-lg">
+        <h1 class="h3">General info</h1>
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input
+                type="text"
+                class="form-control"
+                id="name"
+                value="{{product.name}}"
+                disabled
+            />
+        </div>
+        <div class="mb-3">
+            <label for="desc" class="form-label">Description</label>
+            <textarea
+                class="form-control"
+                id="desc"
+                disabled
+            />{{product.description}}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input
+                type="number"
+                class="form-control"
+                id="price"
+                value="{{product.price}}"
+                disabled
+            />
+        </div>
+        <div class="mb-3">
+            <label for="amount" class="form-label">Amount</label>
+            <input
+                type="number"
+                class="form-control"
+                id="amount"
+                value="{{product.amount}}"
+                disabled
+            />
+        </div>
+        <div class="mb-3">
+            <label for="joined" class="form-label">Date created</label>
+            <input
+                type="date"
+                class="form-control"
+                id="joined"
+                value="{{product.created|date:'Y-m-d'}}"
+                disabled
+            />
+        </div>
+        <div class="d-flex">
+            {% if images %}
+                {% for image in images %} 
+                    <img src="{{image.image.url }}" alt="{{product.name}}'s image" width="200px" height="200px" class="rounded-3 border">
+                {% endfor %}
+            {%endif%}
+        </div>
+    </div>
+    <div class="rounded-3 p-3 mb-5 shadow-lg">
+        <div class="d-flex justify-content-between">
+            <h2 class="fs-3 fw-bold text-center">Tags</h2>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tag in tags %}
+                <tr>
+                    <th scope="row">
+                        {{tag.id}}
+                    </th>
+                    <td>
+                        {{tag.name}}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</main>
+{% endblock %}

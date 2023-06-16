@@ -32,6 +32,7 @@ class Login(LoginView):
 
 
 @login_required(login_url="login")
+@permission_required("users.view_user", login_url="login")
 def view_all_users(request):
     filter_users = UserFilter(
         request.GET, queryset=User.objects.filter(deleted__isnull=True).order_by("id")
@@ -47,6 +48,7 @@ def view_all_users(request):
 
 
 @login_required(login_url="login")
+@permission_required("users.view_user", login_url="login")
 def view_user(request, pk):
     user = User.objects.get(id=pk)
     groups = user.groups.all()
@@ -55,6 +57,7 @@ def view_user(request, pk):
 
 
 @login_required(login_url="login")
+@permission_required("users.change_user", login_url="login")
 def update_user(request, pk):
     user = User.objects.get(id=pk)
     groups = user.groups.all()
@@ -69,6 +72,7 @@ def update_user(request, pk):
 
 
 @login_required(login_url="login")
+@permission_required("users.delete_user", login_url="login")
 def delete_user(request, pk):
     user = User.objects.get(id=pk)
     user.deleted = timezone.now()
@@ -78,6 +82,7 @@ def delete_user(request, pk):
 
 
 @login_required(login_url="login")
+@permission_required("users.add_user", login_url="login")
 def create_user(request):
     form = UserCreateForm()
     context = {"form": form}
@@ -92,6 +97,7 @@ def create_user(request):
 
 
 @login_required(login_url="login")
+@permission_required("users.change_user", login_url="login")
 def update_user_groups(request, pk):
     user = User.objects.get(id=pk)
     user_groups = user.groups.all()
@@ -101,6 +107,7 @@ def update_user_groups(request, pk):
 
 
 @login_required(login_url="login")
+@permission_required("users.change_user", login_url="login")
 def remove_user_group(request, pk, gr_id):
     user = User.objects.get(id=pk)
     user.groups.add(gr_id)
@@ -108,6 +115,7 @@ def remove_user_group(request, pk, gr_id):
 
 
 @login_required(login_url="login")
+@permission_required("users.change_user", login_url="login")
 def add_user_group(request, pk, gr_id):
     user = User.objects.get(id=pk)
     user.groups.remove(gr_id)
@@ -120,7 +128,9 @@ def user_settings(request):
     general_form = UserUpdateForm(instance=user, use_required_attribute=False)
     if request.method == "POST":
         if "conf_gen" in request.POST:
-            general_form = UserUpdateForm(request.POST, instance=user, use_required_attribute=False)
+            general_form = UserUpdateForm(
+                request.POST, instance=user, use_required_attribute=False
+            )
             if general_form.is_valid():
                 user = general_form.save()
         elif "conf_pass" in request.POST:
