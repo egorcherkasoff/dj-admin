@@ -89,7 +89,10 @@
                 disabled
             />
         </div>
-        <div class="d-flex">
+    </div>
+    <div class="rounded-3 p-3 mb-5 shadow-lg">
+        <h2 class="h3">{{product.name}}'s images</h2>
+        <div class="d-flex mt-3">
             {% if images %}
                 {% for image in images %} 
                     <img src="{{image.image.url }}" alt="{{product.name}}'s image" width="200px" height="200px" class="rounded-3 border">
