@@ -2,6 +2,18 @@ from django import forms
 from . import models
 from django.forms import TextInput, Textarea, NumberInput, FileInput
 
+class ViewProduct(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(ViewProduct, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({'class': 'form-control', 'disabled': 'True'})
+
+    class Meta:
+        model = models.Product
+        fields = ["name", "description", "price", "amount"]
+
+        
 
 class ProductForm(forms.ModelForm):
     name = forms.CharField(

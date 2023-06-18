@@ -1,0 +1,17 @@
+<div class="p-4 shadow-lg rounded-3">
+    <form method="get">
+        {{ filter.form }}
+        <div class="row mt-3">
+            <a
+                href="{% url 'view-'|add:model|add:'s' %}"
+                class="btn btn-danger col me-3"
+                >Reset</a
+            >
+            <input
+                type="submit"
+                value="Apply"
+                class="btn btn-primary col ms-2"
+            />
+        </div>
+    </form>
+</div>

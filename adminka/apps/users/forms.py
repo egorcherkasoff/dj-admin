@@ -4,6 +4,18 @@ from django.forms.widgets import PasswordInput, EmailInput, TextInput, FileInput
 from .models import User
 
 
+class ViewUser(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(ViewUser, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({'class': 'form-control', 'disabled': 'True'})
+
+    class Meta:
+        model = User
+        fields = ["email"]
+
+
 class AuthForm(AuthenticationForm):
     username = forms.EmailField(
         widget=EmailInput(attrs={"type": "email", "class": "form-control"})

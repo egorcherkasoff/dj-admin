@@ -5,7 +5,7 @@ from django.core.paginator import Paginator
 from .filters import ProductFilter
 from . import models
 from ..tags.models import Tag
-from .forms import ProductForm, ProductImagesForm
+from .forms import ProductForm, ProductImagesForm, ViewProduct
 from django.http import HttpResponseRedirect
 
 
@@ -13,16 +13,16 @@ from django.http import HttpResponseRedirect
 @login_required(login_url="login")
 @permission_required("products.view_product")
 def view_all_products(request):
-    filter_products = ProductFilter(
+    filter = ProductFilter(
         request.GET, queryset=models.Product.objects.filter(deleted__isnull=True)
     )
-    paginator = Paginator(filter_products.qs, 20)
+    paginator = Paginator(filter.qs, 20)
     if request.GET.get("page"):
         page_num = request.GET.get("page")
     else:
         page_num = 1
     products = paginator.page(page_num)
-    context = {"filter_products": filter_products, "products": products}
+    context = {"filter": filter, "products": products}
     return render(request, "products/products.html", context)
 
 
@@ -30,9 +30,10 @@ def view_all_products(request):
 @permission_required("products.view_product")
 def view_products(request, pk):
     product = models.Product.objects.get(id=pk)
+    form = ViewProduct(instance=product)
     images = product.images.all()
     tags = product.tags.all()
-    context = {"product": product, "images": images, "tags": tags}
+    context = {"product": product, "images": images, "tags": tags, "form": form}
     return render(request, "products/view-product.html", context)
 
 

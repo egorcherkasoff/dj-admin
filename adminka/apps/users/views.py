@@ -8,7 +8,7 @@ from .models import User
 from .filters import UserFilter
 from django.urls import reverse
 from django.core.paginator import Paginator
-from .forms import UserUpdateForm, UserCreateForm, AuthForm
+from .forms import UserUpdateForm, UserCreateForm, AuthForm, ViewUser
 from django.utils import timezone
 
 
@@ -34,16 +34,16 @@ class Login(LoginView):
 @login_required(login_url="login")
 @permission_required("users.view_user", login_url="login")
 def view_all_users(request):
-    filter_users = UserFilter(
+    filter = UserFilter(
         request.GET, queryset=User.objects.filter(deleted__isnull=True).order_by("id")
     )
-    paginator = Paginator(filter_users.qs, 20)
+    paginator = Paginator(filter.qs, 20)
     if request.GET.get("page"):
         page_num = request.GET.get("page")
     else:
         page_num = 1
     users = paginator.page(page_num)
-    context = {"users": users, "filter_users": filter_users}
+    context = {"users": users, "filter": filter}
     return render(request, "users/users.html", context)
 
 
@@ -51,8 +51,9 @@ def view_all_users(request):
 @permission_required("users.view_user", login_url="login")
 def view_user(request, pk):
     user = User.objects.get(id=pk)
+    form = ViewUser(instance=user)
     groups = user.groups.all()
-    context = {"user": user, "groups": groups}
+    context = {"user": user, "groups": groups, "form":form}
     return render(request, "users/view-user.html", context)
 
 

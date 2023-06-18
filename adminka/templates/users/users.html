@@ -3,19 +3,7 @@
 {% block title %}Adminka - Users{% endblock %}
 {% block content %}
 <main class="my-5 container">
-    <div class="p-4 shadow-lg rounded-3">
-        <form method="get">
-            {{ filter_users.form.as_p }}
-            <div class="row">
-                <a href="{% url 'view-users' %}" class="btn btn-danger col me-3">Reset</a>
-                <input
-                    type="submit"
-                    value="Apply"
-                    class="btn btn-primary col ms-2"
-                />
-            </div>
-        </form>
-    </div>
+    {% include 'includes/filter.html' with model="user"%}
     <div class="p-4 shadow-lg mt-5 rounded-3">
         <div class="d-flex justify-content-between">
             <h1 class="fs-3 fw-bold text-center">Users</h1>
@@ -43,30 +31,7 @@
                 {% endfor %}
             </tbody>
         </table>
-        <nav class="d-flex justify-content-center">
-            <ul class="pagination mb-0 mt-2">
-                {% if users.has_previous %}
-                    <li class="page-item">
-                        <a class="page-link" href="{% spurl query=request.GET set_query='page={{users.previous_page_number}}'%}">Previous</a>
-                    </li>
-                {% endif %}
-                
-                {% for num in users.paginator.page_range %}
-                
-                <li class="page-item">
-                    <a class="page-link {% if num == users.number %} active {% endif %}" href="{% spurl query=request.GET set_query='page={{num}}'%}">{{num}}</a>
-                </li>
-                {% endfor %}
-                
-
-                {% if users.has_next %}
-                    <li class="page-item">
-                        <a class="page-link" href="{% spurl query=request.GET set_query='page={{users.next_page_number}}' %}">Next</a>
-                    </li>
-                {% endif %}
-                
-            </ul>
-        </nav>
+        {% include 'includes/pagination.html' with objects=users%}
     </div>
 </main>
 {% endblock  %}
