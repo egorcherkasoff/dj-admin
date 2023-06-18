@@ -3,7 +3,7 @@ from . import models
 from django.forms import TextInput, Textarea, NumberInput, FileInput
 
 
-class ProductUpdateForm(forms.ModelForm):
+class ProductForm(forms.ModelForm):
     name = forms.CharField(
         max_length=100,
         widget=TextInput(attrs={"type": "text", "class": "form-control"}),

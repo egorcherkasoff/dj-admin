@@ -5,7 +5,7 @@ from django.core.paginator import Paginator
 from .filters import ProductFilter
 from . import models
 from ..tags.models import Tag
-from .forms import ProductUpdateForm, ProductImagesForm
+from .forms import ProductForm, ProductImagesForm
 from django.http import HttpResponseRedirect
 
 
@@ -39,7 +39,14 @@ def view_products(request, pk):
 @login_required(login_url="login")
 @permission_required("products.add_product")
 def create_product(request):
-    pass
+    form = ProductForm()
+    context = {"form": form}
+    if request.method == "POST":
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            product = form.save()
+            return redirect("view-products")
+    return render(request, "products/create-product.html", context)
 
 
 @login_required(login_url="login")
@@ -48,11 +55,11 @@ def update_product(request, pk):
     product = models.Product.objects.get(id=pk)
     images = product.images.all()
     tags = product.tags.all()
-    form = ProductUpdateForm(instance=product)
+    form = ProductForm(instance=product)
     image_form = ProductImagesForm()
     if request.method == "POST":
         if "name" in request.POST:
-            form = ProductUpdateForm(request.POST, instance=product)
+            form = ProductForm(request.POST, instance=product)
             product = form.save()
             product.updated = timezone.now()
             product.save()
