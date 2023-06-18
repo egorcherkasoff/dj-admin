@@ -13,7 +13,7 @@ class Product(models.Model):
     updated = models.DateTimeField(null=True, blank=True)
     deleted = models.DateTimeField(null=True, blank=True)
     tags = models.ManyToManyField(
-        to=Tag, related_name="products", related_query_name="tag", blank=True
+        to=Tag, related_name="tags", related_query_name="product", blank=True
     )
 
     def __str__(self):

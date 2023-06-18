@@ -7,6 +7,8 @@ from . import models
 from ..tags.models import Tag
 from .forms import ProductUpdateForm, ProductImagesForm
 from django.http import HttpResponseRedirect
+
+
 # Create your views here.
 @login_required(login_url="login")
 @permission_required("products.view_product")
@@ -30,7 +32,7 @@ def view_products(request, pk):
     product = models.Product.objects.get(id=pk)
     images = product.images.all()
     tags = product.tags.all()
-    context = {"product": product,"images":images , "tags": tags}
+    context = {"product": product, "images": images, "tags": tags}
     return render(request, "products/view-product.html", context)
 
 
@@ -56,11 +58,17 @@ def update_product(request, pk):
             product.save()
             return redirect("view-product", product.id)
         if request.FILES:
-            for file in request.FILES.getlist('image'):  # Получаем список всех файлов
+            for file in request.FILES.getlist("image"):
                 product_image = models.ProductImage(product=product, image=file)
                 product_image.save()
             return redirect("view-product", product.id)
-    context = {"product": product, "images": images, "tags":tags, "form": form, "image_form":image_form}
+    context = {
+        "product": product,
+        "images": images,
+        "tags": tags,
+        "form": form,
+        "image_form": image_form,
+    }
     return render(request, "products/update-product.html", context)
 
 
@@ -78,4 +86,31 @@ def delete_product(request, pk):
 def delete_product_image(request, pk, img_id):
     image = models.ProductImage.objects.get(id=img_id)
     image.delete()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
+
+@login_required(login_url="login")
+@permission_required("products.change_product")
+def update_product_tags(request, pk):
+    product = models.Product.objects.get(id=pk)
+    product_tags = product.tags.filter(deleted__isnull=True)
+    tags = Tag.objects.exclude(product__id=product.id)
+    context = {"product": product, "product_tags": product_tags, "tags": tags}
+    return render(request, "products/update-product-tags.html", context)
+
+
+@login_required(login_url="login")
+@permission_required("products.change_product")
+def add_product_tag(request, pk, tag_id):
+    product = models.Product.objects.get(id=pk)
+    product.tags.add(tag_id)
+    return redirect("update-product-tags", pk)
+
+
+@login_required(login_url="login")
+@permission_required("products.change_product")
+def remove_product_tag(request, pk, tag_id):
+    product = models.Product.objects.get(id=pk)
+    product.tags.remove(tag_id)
+    return redirect("update-product-tags", pk)
+    

@@ -1,31 +1,31 @@
 {% extends 'base.html' %} 
-{% block title %}Adminka - Update User Groups:{{user.get_full_name}}{% endblock %} 
+{% block title %}Adminka - Update Product Tags:{{product.name}}{% endblock %} 
 {% block content %}
 <main class="my-5 container">
     <div class="rounded-3 p-3 my-5 shadow-lg d-flex justify-content-between">
         <nav aria-label="breadcrumb ">
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item">
-                    <a href="{% url 'view-users'%}">Users</a>
+                    <a href="{% url 'view-products'%}">Products</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    <a href="{% url 'view-user' user.id %}">{{user.get_full_name}} (ID:{{user.id}})</a> 
+                    <a href="{% url 'view-product' product.id %}">{{product.name}} (ID:{{product.id}})</a> 
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    <a href="{% url 'update-user' user.id %}">Update</a> 
+                    <a href="{% url 'update-product' product.id %}">Update</a> 
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    Groups
+                    Tags
                 </li>
             </ol>
         </nav>
         <div>
-            <a href="{% url 'update-user' user.id %}" class="btn btn-primary">Go Back</a>
+            <a href="{% url 'update-product' product.id %}" class="btn btn-primary">Go Back</a>
         </div>
     </div>
     <div class="rounded-3 p-3 mb-5 shadow-lg">
         <div class="d-flex justify-content-between">
-            <h2 class="fs-3 fw-bold text-center">Remove Groups</h2>
+            <h2 class="fs-3 fw-bold text-center">Remove Tags</h2>
         </div>
         <table class="table">
             <thead>
@@ -36,17 +36,17 @@
                 </tr>
             </thead>
             <tbody>
-                {% for group in user_groups %}
+                {% for tag in product_tags %}
                 <tr>
                     <th scope="row">
-                        <a href="{% url 'view-user' user.id %}">{{group.id}}</a>
+                        <a href="{% url 'view-user' user.id %}">{{tag.id}}</a>
                     </th>
                     <td>
                         <a href="{% url 'view-user' user.id %}"
-                            >{{group.name}}</a
+                            >{{tag.name}}</a
                         >
                     </td>
-                    <td><a href="{% url 'remove-user-group' user.id group.id %}" class="btn btn-danger">Remove</a></td>
+                    <td><a href="{% url 'remove-product-tag' product.id tag.id %}" class="btn btn-danger">Remove</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -54,7 +54,7 @@
     </div>
     <div class="rounded-3 p-3 mb-5 shadow-lg">
         <div class="d-flex justify-content-between">
-            <h2 class="fs-3 fw-bold text-center">Add Groups</h2>
+            <h2 class="fs-3 fw-bold text-center">Add Tags</h2>
         </div>
         <table class="table">
             <thead>
@@ -65,17 +65,17 @@
                 </tr>
             </thead>
             <tbody>
-                {% for group in groups %}
+                {% for tag in tags %}
                 <tr>
                     <th scope="row">
-                        <a href="{% url 'view-user' user.id %}">{{group.id}}</a>
+                        <a href="{% url 'view-user' user.id %}">{{tag.id}}</a>
                     </th>
                     <td>
                         <a href="{% url 'view-user' user.id %}"
-                            >{{group.name}}</a
+                            >{{tag.name}}</a
                         >
                     </td>
-                    <td><a href="{% url 'add-user-group' user.id group.id%}" class="btn btn-success">Add</a></td>
+                    <td><a href="{% url 'add-product-tag' product.id tag.id%}" class="btn btn-success">Add</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
