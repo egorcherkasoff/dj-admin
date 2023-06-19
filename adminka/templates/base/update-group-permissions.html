@@ -1,0 +1,81 @@
+{% extends 'base.html' %} 
+{% block title %}Adminka - Update Group Permissions:{{group.name}}{% endblock %} 
+{% block content %}
+<main class="my-5 container">
+    <div class="rounded-3 p-3 my-5 shadow-lg d-flex justify-content-between">
+        <nav aria-label="breadcrumb ">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                    <a href="{% url 'view-groups'%}">Groups</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <a href="{% url 'view-group' group.id %}">{{group.name}} (ID:{{group.id}})</a> 
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <a href="{% url 'update-group' group.id %}">Update</a> 
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    Tags
+                </li>
+            </ol>
+        </nav>
+        <div>
+            <a href="{% url 'update-group' group.id %}" class="btn btn-primary">Go Back</a>
+        </div>
+    </div>
+    <div class="rounded-3 p-3 mb-5 shadow-lg">
+        <div class="d-flex justify-content-between">
+            <h2 class="fs-3 fw-bold text-center">Remove Permissions</h2>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for permission in group_permissions %}
+                <tr>
+                    <th scope="row">
+                        {{permission.id}}
+                    </th>
+                    <td>
+                        {{permission.name}}
+                    </td>
+                    <td><a href="{% url 'remove-group-permission' group.id permission.id %}" class="btn btn-danger">Remove</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="rounded-3 p-3 mb-5 shadow-lg">
+        <div class="d-flex justify-content-between">
+            <h2 class="fs-3 fw-bold text-center">Add Permissions</h2>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for permission in permissions %}
+                <tr>
+                    <th scope="row">
+                       {{permission.id}}
+                    </th>
+                    <td>
+                        {{permission.name}}
+                    </td>
+                    <td><a href="{% url 'add-group-permission' group.id permission.id%}" class="btn btn-success">Add</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</main>
+{% endblock %}

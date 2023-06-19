@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Adminka - Groups{% endblock %}
+{% block content %}
+<main class="my-5 container">
+    <div class="p-4 shadow-lg mt-5 rounded-3">
+        <div class="d-flex justify-content-between">
+            <h1 class="fs-3 fw-bold text-center">Groups</h1>
+            <a href="{% url 'create-group' %}" class="text-primary"
+                ><i class="fa-solid fa-circle-plus fs-1"></i
+            ></a>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for group in groups %}
+                 <tr>
+                    <th scope="row"> <a href="{% url 'view-group' group.id %}">{{group.id}}</a> </th>
+                    <td><a href="{% url 'view-group' group.id %}">{{group.name}}</a> </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</main>
+{% endblock  %}
+

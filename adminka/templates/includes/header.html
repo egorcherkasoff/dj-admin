@@ -20,6 +20,16 @@
                         <a class="nav-link" href="{% url 'view-users' %}">Users</a>
                     </li>
                     {% endif %}
+                    {% if 'view_group' in perms %}
+                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'view-groups' %}">Groups</a>
+                    </li>
+                    {% endif %}
+                    {% if 'view_notification' in perms %}
+                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'view-users' %}">Notifications</a>
+                    </li>
+                    {% endif %}
                     {% if 'view_product' in perms %}
                      <li class="nav-item">
                         <a class="nav-link" href="{% url 'view-products' %}">Products</a>
