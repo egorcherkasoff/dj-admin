@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import Group, Permission
 from .forms import ViewGroup, GroupForm
-
+from ..notifications.models import Notification
+from django.utils import timezone
 
 # Create your views here.
 def not_found_view(request, exception):
@@ -11,7 +12,10 @@ def not_found_view(request, exception):
 
 @login_required(login_url="login")
 def index(request):
-    return render(request, "index.html")
+    now = timezone.now()
+    notifications = Notification.objects.filter(end__lt = now).order_by('start')
+    context = {'notifications': notifications}
+    return render(request, "index.html", context)
 
 
 @login_required(login_url="login")

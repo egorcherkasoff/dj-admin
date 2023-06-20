@@ -1,0 +1,17 @@
+<div class="rounded-3 p-3 my-5 shadow-lg d-flex justify-content-between">
+        <nav aria-label="breadcrumb ">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                    <a href="{% url 'view-'|add:name|add:'s'|lower %}">{{name}}</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    Create
+                </li>
+            </ol>
+        </nav>
+        <div>
+            <a href="{% url 'view-'|add:name|add:'s'|lower %}" class="btn btn-primary"
+                >Go Back</a>
+            <input type="submit" value="Create new {{name|lower}}" class="btn btn-success mb-0" form="model">
+        </div>
+    </div>

@@ -2,24 +2,7 @@
 {% block title %}Adminka - User:{{user.get_full_name}}{% endblock %} 
 {% block content %}
 <main class="my-5 container">
-    <div class="rounded-3 p-3 my-5 shadow-lg d-flex justify-content-between">
-        <nav aria-label="breadcrumb ">
-            <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item">
-                    <a href="{% url 'view-users'%}">Users</a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">
-                    {{user.get_full_name}} (ID:{{user.id}})
-                </li>
-            </ol>
-        </nav>
-        <div>
-            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-confirm"
-                >Delete
-            </button>
-            <a href="{% url 'update-user' user.id %}" class="btn btn-warning">Update</a>
-        </div>
-    </div>
+        {% include 'includes/breadcrumbs/view-breadcrumb.html' with model=user name="User" %}
         {% include 'includes/delete-modal.html' with model="user" object=user%}
     <div class="rounded-3 p-3 mb-5 shadow-lg">
         <h1 class="h3">General info</h1>

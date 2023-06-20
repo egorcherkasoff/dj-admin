@@ -2,24 +2,7 @@
 {% block title %}Adminka - Create Tag{% endblock %} 
 {% block content %}
 <main class="my-5 container">
-    <div class="rounded-3 p-3 my-5 shadow-lg d-flex justify-content-between">
-        <nav aria-label="breadcrumb ">
-            <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item">
-                    <a href="{% url 'view-tags'%}">Tags</a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">
-                    Create
-                </li>
-            </ol>
-        </nav>
-        <div>
-            <a href="{% url 'view-tags' %}" class="btn btn-primary"
-                >Go Back</a>
-            <input type="submit" value="Create new tag" class="btn btn-success mb-0" form="model">
-            
-        </div>
-    </div>
+    {% include 'includes/breadcrumbs/create-breadcrumb.html' with model=tag name="Tag"%}
     <div class="rounded-3 p-3 mb-5 shadow-lg">
         <h1 class="h3">General info</h1>
         <form method="post" id="model">
