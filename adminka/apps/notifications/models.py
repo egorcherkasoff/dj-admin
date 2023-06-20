@@ -11,7 +11,7 @@ class Notification(models.Model):
     ]
 
     text = models.CharField(max_length=155, null=False, blank=False)
-    allow_dates = models.BooleanField(default=True, null=False, blank=True)
+    allow_dates = models.BooleanField(null=True, default=True,  blank=True) #display dates on home page or not
     type = models.CharField(
         null=False, blank=False, choices=NOTIFICATION_TYPES, max_length=15
     )

@@ -26,5 +26,6 @@ urlpatterns = [
     path("", include("apps.users.urls")),
     path("products/", include("apps.products.urls")),
     path("tags/", include("apps.tags.urls")),
+    path("notifications/", include("apps.notifications.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 handler404 = "apps.base.views.not_found_view"

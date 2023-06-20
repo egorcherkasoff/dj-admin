@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
-{% block title %}Adminka - Products{% endblock %}
+{% block title %}Adminka - Notifications{% endblock %}
 {% block content %}
 <main class="my-5 container">
-    {% include 'includes/filter.html' with model="product"%}
+    {% include 'includes/filter.html' with model="notification"%}
     <div class="p-4 shadow-lg mt-5 rounded-3">
         <div class="d-flex justify-content-between">
-            <h1 class="fs-3 fw-bold text-center">Products</h1>
-            <a href="{% url 'create-product' %}" class="text-primary"
+            <h1 class="fs-3 fw-bold text-center">Notifications</h1>
+            <a href="{% url 'create-notification' %}" class="text-primary"
                 ><i class="fa-solid fa-circle-plus fs-1"></i
             ></a>
         </div>
@@ -14,25 +14,25 @@
             <thead>
                 <tr>
                     <th scope="col">ID</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Amount</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Date Created</th>
+                    <th scope="col">Text</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Date start</th>
+                    <th scope="col">Date end</th>
                 </tr>
             </thead>
             <tbody>
-                {% for product in products %}
+                {% for notification in notifications %}
                  <tr>
-                    <th scope="row"> <a href="{% url 'view-product' product.id %}">{{product.id}}</a> </th>
-                    <td><a href="{% url 'view-product' product.id %}">{{product.name}}</a> </td>
-                    <td>{{product.amount}}</td>
-                    <td>{{product.price}}</td>
-                    <td>{{product.created|date:'Y-m-d'}}</td>
+                    <th scope="row"> <a href="{% url 'view-notification' notification.id %}">{{notification.id}}</a> </th>
+                    <td><a href="{% url 'view-notification' notification.id %}">{{notification}}</a> </td>
+                    <td>{{notification.get_type_display}}</td>
+                    <td>{{notification.start|date:'Y-m-d'}}</td>
+                    <td>{{notification.end|date:'Y-m-d'}}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        {% include 'includes/pagination.html' with objects=products%}
+        {% include 'includes/pagination.html' with objects=notifications%}
     </div>
 </main>
 {% endblock  %}

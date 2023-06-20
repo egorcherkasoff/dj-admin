@@ -1,15 +1,15 @@
 {% extends 'base.html' %} 
-{% block title %}Adminka - Product:{{product.name}}{% endblock %} 
+{% block title %}Adminka - Notification:{{notification}}{% endblock %} 
 {% block content %}
 <main class="my-5 container">
     <div class="rounded-3 p-3 my-5 shadow-lg d-flex justify-content-between">
         <nav aria-label="breadcrumb ">
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item">
-                    <a href="{% url 'view-products'%}">Products</a>
+                    <a href="{% url 'view-notifications'%}">Notifications</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    {{product.name}} (ID:{{product.id}})
+                    {{notification.name}} (ID:{{notification.id}})
                 </li>
             </ol>
         </nav>
@@ -17,10 +17,10 @@
             <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-confirm"
                 >Delete
             </button>
-            <a href="{% url 'update-product' product.id %}" class="btn btn-warning">Update</a>
+            <a href="{% url 'update-notification' notification.id %}" class="btn btn-warning">Update</a>
         </div>
     </div>
-    {% include 'includes/delete-modal.html' with model="product" object=product%}
+    {% include 'includes/delete-modal.html' with model="notification" object=notification%}
     <div class="rounded-3 p-3 mb-5 shadow-lg">
         <h1 class="h3">General info</h1>
         {{form}}
@@ -30,45 +30,10 @@
                 type="date"
                 class="form-control"
                 id="created"
-                value="{{product.created|date:'Y-m-d'}}"
+                value="{{notification.created|date:'Y-m-d'}}"
                 disabled
             />
         </div>
-    </div>
-    <div class="rounded-3 p-3 mb-5 shadow-lg">
-        <h2 class="h3">{{product.name}}'s images</h2>
-        <div class="d-flex mt-3">
-            {% if images %}
-                {% for image in images %} 
-                    <img src="{{image.image.url }}" alt="{{product.name}}'s image" width="200px" height="200px" class="rounded-3 border">
-                {% endfor %}
-            {%endif%}
-        </div>
-    </div>
-    <div class="rounded-3 p-3 mb-5 shadow-lg">
-        <div class="d-flex justify-content-between">
-            <h2 class="fs-3 fw-bold text-center">Tags</h2>
-        </div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for tag in tags %}
-                <tr>
-                    <th scope="row">
-                        {{tag.id}}
-                    </th>
-                    <td>
-                        {{tag.name}}
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
     </div>
 </main>
 {% endblock %}
