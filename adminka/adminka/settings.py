@@ -46,8 +46,10 @@ INSTALLED_APPS = [
     "apps.products",
     "apps.notifications",
     "apps.base",
+    "apps.api",
     'django_filters',
     'spurl',
+    'rest_framework'
 ]
 
 # custom user

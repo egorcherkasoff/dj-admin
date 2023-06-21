@@ -4,3 +4,4 @@ mysqlclient
 django-filter
 python-dotenv
 django-spurl
+djangorestframework
