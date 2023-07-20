@@ -34,23 +34,30 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
+LOCAL_APPS = [
+    "apps.users",
+    "apps.tags",
+    "apps.products",
+    "apps.notifications",
+    "apps.base",
+    "apps.shipments",
+]
+
+THIRD_PARTY_APPS = [
+    "django_filters",
+    "spurl",
+]
+
+DJANGO_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "apps.users",
-    "apps.tags",
-    "apps.products",
-    "apps.notifications",
-    "apps.base",
-    "apps.api",
-    'django_filters',
-    'spurl',
-    'rest_framework'
 ]
+
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 # custom user
 AUTH_USER_MODEL = "users.User"
@@ -152,3 +159,16 @@ MEDIA_ROOT = BASE_DIR / "media"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# emailing settings
+
+EMAIL_HOST = environ.get("EMAIL_HOST")
+EMAIL_PORT = environ.get("EMAIL_PORT")
+EMAIL_HOST_USER = environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = environ.get("EMAIL_HOST_PASSWORD")
+
+SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True

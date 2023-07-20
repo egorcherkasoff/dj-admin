@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from ..tags.models import Tag
+from django.utils import timezone
 
 
 # Create your models here.
@@ -10,7 +11,7 @@ class Product(models.Model):
     price = models.DecimalField(decimal_places=2, max_digits=9, null=False, blank=False)
     amount = models.IntegerField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(null=True, blank=True)
+    updated = models.DateTimeField(auto_now=True)
     deleted = models.DateTimeField(null=True, blank=True)
     tags = models.ManyToManyField(
         to=Tag, related_name="tags", related_query_name="product", blank=True
@@ -21,6 +22,10 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         pass
+
+    def delete(self):
+        self.deleted = timezone.now()
+        self.save()
 
     class Meta:
         verbose_name = "product"

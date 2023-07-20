@@ -5,6 +5,7 @@ from .forms import ViewGroup, GroupForm
 from ..notifications.models import Notification
 from django.utils import timezone
 
+
 # Create your views here.
 def not_found_view(request, exception):
     return render(request, "error.html")
@@ -13,8 +14,8 @@ def not_found_view(request, exception):
 @login_required(login_url="login")
 def index(request):
     now = timezone.now()
-    notifications = Notification.objects.filter(end__lt = now).order_by('start')
-    context = {'notifications': notifications}
+    notifications = Notification.objects.filter(end__gt=now).order_by("start")
+    context = {"notifications": notifications}
     return render(request, "index.html", context)
 
 
@@ -82,7 +83,11 @@ def update_group_permissions(request, pk):
     group = Group.objects.get(id=pk)
     group_permissions = group.permissions.all()
     permissions = Permission.objects.exclude(group__id=group.id)
-    context = {"group": group, "group_permissions": group_permissions, "permissions": permissions}
+    context = {
+        "group": group,
+        "group_permissions": group_permissions,
+        "permissions": permissions,
+    }
     return render(request, "base/update-group-permissions.html", context)
 
 

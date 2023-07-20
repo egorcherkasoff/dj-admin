@@ -5,11 +5,12 @@ from .models import User
 
 
 class ViewUser(forms.ModelForm):
-
     def __init__(self, *args, **kwargs):
         super(ViewUser, self).__init__(*args, **kwargs)
         for field in self.fields:
-            self.fields[field].widget.attrs.update({'class': 'form-control', 'disabled': 'True'})
+            self.fields[field].widget.attrs.update(
+                {"class": "form-control", "disabled": "True"}
+            )
 
     class Meta:
         model = User
@@ -69,11 +70,7 @@ class UserCreateForm(forms.ModelForm):
         max_length=100,
         widget=TextInput(attrs={"type": "email", "class": "form-control"}),
     )
-    password = forms.CharField(
-        max_length=50,
-        widget=PasswordInput(attrs={"type": "password", "class": "form-control"}),
-    )
 
     class Meta:
         model = User
-        fields = ["first_name", "middle_name", "last_name", "email", "password"]
+        fields = ["first_name", "middle_name", "last_name", "email"]

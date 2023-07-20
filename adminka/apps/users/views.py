@@ -10,6 +10,8 @@ from django.urls import reverse
 from django.core.paginator import Paginator
 from .forms import UserUpdateForm, UserCreateForm, AuthForm, ViewUser
 from django.utils import timezone
+from .services import create_user_emailing
+import secrets
 
 
 # Create your views here.
@@ -53,7 +55,7 @@ def view_user(request, pk):
     user = User.objects.get(id=pk)
     form = ViewUser(instance=user)
     groups = user.groups.all()
-    context = {"user": user, "groups": groups, "form":form}
+    context = {"user": user, "groups": groups, "form": form}
     return render(request, "users/view-user.html", context)
 
 
@@ -76,9 +78,7 @@ def update_user(request, pk):
 @permission_required("users.delete_user", login_url="login")
 def delete_user(request, pk):
     user = User.objects.get(id=pk)
-    user.deleted = timezone.now()
-    user.is_active = False
-    user.save()
+    user.delete()
     return redirect("view-users")
 
 
@@ -91,8 +91,10 @@ def create_user(request):
         form = UserCreateForm(request.POST)
         if form.is_valid():
             user = form.save()
-            user.set_password(request.POST.get("password"))
+            password = secrets.token_hex()
+            user.set_password(password)
             user.save()
+            create_user_emailing(user.email, password)
             return redirect("view-users")
     return render(request, "users/create-user.html", context)
 
@@ -135,8 +137,9 @@ def user_settings(request):
             if general_form.is_valid():
                 user = general_form.save()
         elif "conf_pass" in request.POST:
-            if request.POST.get("pass1") == request.POST.get("pass2"):
-                user.set_password(request.POST.get("pass2"))
-                user.save()
+            if request.POST.get("pass1"):
+                if request.POST.get("pass1") == request.POST.get("pass2"):
+                    user.set_password(request.POST.get("pass2"))
+                    user.save()
     context = {"user": user, "general_form": general_form}
     return render(request, "users/user-settings.html", context)
