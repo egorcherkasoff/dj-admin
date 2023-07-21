@@ -1,0 +1,22 @@
+{% extends 'base.html' %} 
+{% block title %}Adminka - Tag:{{tag.name}}{% endblock %} 
+{% block content %}
+<main class="my-5 container">
+    {% include 'includes/breadcrumbs/view-breadcrumb.html' with model=tag name="Tag" %}
+    {% include 'includes/delete-modal.html' with model="tag" object=tag%}
+    <div class="rounded-3 p-3 mb-5 shadow-lg">
+        <h1 class="h3">General info</h1>
+        {{form}}
+        <div class="mb-3">
+            <label for="created" class="form-label">Date created</label>
+            <input
+                type="date"
+                class="form-control"
+                id="created"
+                value="{{tag.created|date:'Y-m-d'}}"
+                disabled
+            />
+        </div>
+    </div>
+</main>
+{% endblock %}

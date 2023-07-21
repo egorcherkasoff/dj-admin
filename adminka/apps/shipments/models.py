@@ -6,10 +6,7 @@ from django.utils import timezone
 # Create your models here.
 class Shipment(models.Model):
     series = models.CharField(max_length=100, null=False, blank=False, db_index=True)
-    product = models.ManyToManyField(
-        to=Product, related_name="products", related_query_name="shipments"
-    )
-    amount = models.IntegerField(blank=False)
+    comment = models.TextField(blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     deleted = models.DateTimeField(null=True, blank=True)
@@ -20,3 +17,11 @@ class Shipment(models.Model):
 
     def __str__(self):
         return self.series
+
+
+class ShipmentProducts(models.Model):
+    shipment = models.ForeignKey(to=Shipment, on_delete=models.CASCADE)
+    product = models.ForeignKey(
+        to=Product, on_delete=models.CASCADE, related_name="shipment_products"
+    )
+    amount = models.IntegerField(blank=False)

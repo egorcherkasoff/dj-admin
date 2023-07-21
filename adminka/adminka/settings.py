@@ -101,11 +101,11 @@ WSGI_APPLICATION = "adminka.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": environ.get("DB_NAME"),
-        "USER": environ.get("DB_USER"),
-        "PASSWORD": environ.get("DB_PASSWORD"),
-        "HOST": environ.get("DB_HOST"),
-        "PORT": environ.get("DB_PORT"),
+        "NAME": environ.get("MYSQL_DATABASE"),
+        "USER": environ.get("MYSQL_USER"),
+        "PASSWORD": environ.get("MYSQL_PASSWORD"),
+        "HOST": environ.get("MYSQL_HOST"),
+        "PORT": environ.get("MYSQL_PORT"),
     }
 }
 
@@ -144,16 +144,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/staticfiles/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = []
 
-STATIC_ROOT = BASE_DIR / "static"
-
-STATICFILES_DIRS = [BASE_DIR / "staticfiles"]
-
-# media files
-MEDIA_URL = "media/"
-
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = "/mediafiles/"
+MEDIA_ROOT = BASE_DIR / "mediafiles"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

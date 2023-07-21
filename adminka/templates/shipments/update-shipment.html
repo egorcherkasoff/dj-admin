@@ -1,0 +1,15 @@
+{% extends 'base.html' %} 
+{% block title %}Adminka - Update Shipment: {{shipment}}{% endblock %} 
+{% block content %}
+<main class="my-5 container">
+    {% include 'includes/breadcrumbs/update-breadcrumb.html' with model=shipment name="Shipment" %}
+    <div class="rounded-3 p-3 mb-5 shadow-lg">
+        <h1 class="h3">General info</h1>
+        <form method="post" id="model">
+          {% csrf_token %}
+            {{form}}
+        </div>
+        </form>
+    </div>
+</main>
+{% endblock %}

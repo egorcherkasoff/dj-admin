@@ -30,6 +30,11 @@
                         <a class="nav-link" href="{% url 'view-notifications' %}">Notifications</a>
                     </li>
                     {% endif %}
+                    {% if 'view_shipment' in perms %}
+                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'view-shipments' %}">Shipments</a>
+                    </li>
+                    {% endif %}
                     {% if 'view_product' in perms %}
                      <li class="nav-item">
                         <a class="nav-link" href="{% url 'view-products' %}">Products</a>

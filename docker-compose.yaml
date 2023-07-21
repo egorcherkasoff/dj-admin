@@ -1,0 +1,53 @@
+version: "3.9"
+
+services:
+    web:
+        container_name: adminka-app
+        build:
+            context: .
+            dockerfile: ./docker/django/Dockerfile
+        expose:
+            - 8000
+        command: /start
+        env_file:
+            - .env
+        volumes:
+            - .:/app
+            - static_volume:/app/adminka/staticfiles
+            - media_volume:/app/adminka/mediafiles
+        networks:
+            - adminka
+        depends_on:
+            - db
+    db:
+        image: mysql:8.0
+        container_name: adminka-db
+        env_file:
+            - .env
+        ports:
+            - 3306:3306
+        networks:
+            - adminka
+    webserver:
+        build:
+            context: ./docker/nginx/
+            dockerfile: ./Dockerfile
+        container_name: adminka-webserver
+        ports:
+            - 80:80
+        volumes:
+            - static_volume:/app/adminka/staticfiles
+            - media_volume:/app/adminka/mediafiles
+        depends_on:
+            - web
+        networks:
+            - adminka
+
+volumes:
+    static_volume:
+    media_volume:
+
+
+networks:
+    adminka:
+        driver: bridge
