@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
+from django.contrib.auth import logout
 from .models import User
 from .filters import UserFilter
 from django.urls import reverse
@@ -15,9 +16,15 @@ import secrets
 
 
 # Create your views here.
-class Logout(LoginRequiredMixin, LogoutView):
-    next_page = "login"
-    login_url = "login"
+# class Logout(LoginRequiredMixin, LogoutView):
+#     next_page = "login"
+#     login_url = "login"
+
+
+@login_required(login_url="login")
+def logout_user(request):
+    logout(request)
+    return redirect("login")
 
 
 class Login(LoginView):
